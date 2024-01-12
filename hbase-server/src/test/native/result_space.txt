@@ -1,0 +1,36 @@
+maxKey = 111633
+filter size = 155136
+
+bloom construct time = 24
+bloom query added time = 74
+bloom query not added time = 26
+bloom fp rate = 4.738742128223734E-4
+
+ribbon construct time =110
+ribbon query added time = 163
+ribbon query not added time = 89
+ribbon fp rate = 0.00902690064765795
+////////////////////////////
+ribbon native add time = 1.3689999999999665
+ribbon native backSubst time = 37.577
+ribbon native query time = 2.6529999999998806
+ribbon native string to chars time = 32.014000000000046
+ribbon native init time = 0.517
+////////////////////////////
+ribbon native construct time = 39.462999999999965
+////////////////////////////
+ribbon space = 146706/155136
+bloom space = 111633/155136
+
+遗留问题：
+// fp相关
+1、同一数据集，ribbon的测试结果不稳定，隔几次fp会较大变动一次。
+2、不同数据集对于ribbon的测试结果影响很大
+3、没有真正找到计算ribbon fp的代码，下一步找找实际的rocksdb的调用代码
+// 可用性相关
+4、偶尔ribbon连最基本的assert true测试都过不了，而且过不了的i每次都不一样
+
+下一步的计划：
+1、读源码，找实际调用时，计算fp的地方
+2、使用java实现ribbon，了解fp不稳定和可用性偶尔爆炸的原因，并且尽量避免
+

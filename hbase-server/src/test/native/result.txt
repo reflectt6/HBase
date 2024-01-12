@@ -1,0 +1,88 @@
+maxKey = 109306
+filter size = 131072
+
+bloom construct time = 25
+bloom query added time = 69
+bloom query not added time = 25
+bloom fp rate = 0.0010072640111247325
+
+ribbon construct time =95
+ribbon query added time = 111
+ribbon query not added time = 63
+ribbon fp rate = 0.0
+
+
+
+maxKey = 1093068
+filter size = 1310720
+
+bloom construct time = 127
+bloom query added time = 151
+bloom query not added time = 169
+bloom fp rate = 0.001009086351443826
+
+ribbon construct time =962
+ribbon query added time = 1094
+ribbon query not added time = 659
+ribbon fp rate = 0.0
+
+
+maxKey = 3279206
+filter size = 3932160
+
+bloom construct time = 321
+bloom query added time = 606
+bloom query not added time = 802
+bloom fp rate = 9.967351852857064E-4
+
+ribbon construct time =3130
+ribbon query added time = 3351
+ribbon query not added time = 2083
+ribbon fp rate = 0.0
+
+
+
+maxKey = 109306
+filter size = 131072
+
+bloom construct time = 36
+bloom query added time = 84
+bloom query not added time = 26
+bloom fp rate = 0.0010072640111247325
+
+ribbon construct time =120
+ribbon query added time = 128
+ribbon query not added time = 82
+ribbon fp rate = 0.0
+////////////////////////////
+ribbon native add time = 5.934000000000002
+ribbon native backSubst time = 32.648
+ribbon native query time = 1.321999999999991
+ribbon native string to chars time = 7.481999999999999
+ribbon native init time = 0.437
+////////////////////////////
+ribbon native construct time = 39.019000000000005
+
+
+取ribbon：计算num时间：0ms， 其中 num_to_add = 146706, num_slots = 155136 Average FP rate: 0.00346 (~= 0.00390625, <= 0.00476, >= 0.00306)
+maxKey = 107993
+filter size = 155136
+
+bloom construct time = 25
+bloom query added time = 74
+bloom query not added time = 25
+bloom fp rate = 3.953959978887521E-4
+
+ribbon construct time =134
+ribbon query added time = 128
+ribbon query not added time = 81
+ribbon fp rate = 9.565434796699787E-4
+////////////////////////////
+ribbon native add time = 1.2629999999999766
+ribbon native backSubst time = 38.055
+ribbon native query time = 2.6589999999999288
+ribbon native string to chars time = 4.237999999999945
+ribbon native init time = 0.707
+////////////////////////////
+ribbon native construct time = 40.02499999999998
+

@@ -26,6 +26,7 @@ import java.io.DataOutputStream;
 import java.nio.ByteBuffer;
 import org.apache.hadoop.hbase.HBaseClassTestRule;
 import org.apache.hadoop.hbase.nio.MultiByteBuff;
+import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.testclassification.MiscTests;
 import org.apache.hadoop.hbase.testclassification.SmallTests;
 import org.junit.ClassRule;
@@ -195,5 +196,112 @@ public class TestBloomFilterChunk {
   public void testFoldableByteSize() {
     assertEquals(128, BloomFilterUtil.computeFoldableByteSize(1000, 5));
     assertEquals(640, BloomFilterUtil.computeFoldableByteSize(5001, 4));
+  }
+
+  @Test
+  public void testBloomChunkAndRibbon() throws Exception {
+//    int byteSizeHint = 128 * 1024;
+    int byteSizeHint = 155136;
+
+
+    long start = System.currentTimeMillis();
+    BloomFilterChunk bfc = BloomFilterUtil.createBySize(byteSizeHint, (float)0.0048, 1, 7, BloomType.ROW);
+    bfc.allocBloom();
+    long end = System.currentTimeMillis();
+    long c1 = end - start;
+
+    int keyNum = (int)bfc.getMaxKeys();
+    System.out.println("maxKey = "+keyNum);
+    System.out.println("filter size = " + byteSizeHint);
+    System.out.println();
+
+    byte[][] keys = new byte[keyNum * 2][];
+    String[] keys2 = new String[keyNum * 2];
+    for (int i = 0; i < keyNum * 2; i++) {
+      keys[i] = Bytes.toBytes("this is a much larger byte array" + i * 0.618);
+      keys2[i] = "this is a much larger byte array" + i * 0.618;
+    }
+
+    start = System.currentTimeMillis();
+    // test for bloom
+    for (int i = 0; i < keyNum; i++) {
+      bfc.add(keys[i], 0, keys[i].length);
+    }
+    end = System.currentTimeMillis();
+    System.out.println("bloom construct time = " + (end - start + c1));
+
+    start = System.currentTimeMillis();
+    for (int i = 0; i < keyNum; i++) {
+      assertTrue(BloomFilterUtil.contains(keys[i], 0, keys[i].length, new MultiByteBuff(bfc.bloom), 0,
+        (int) bfc.byteSize, bfc.hash, bfc.hashCount));
+    }
+    end = System.currentTimeMillis();
+    System.out.println("bloom query added time = " + (end - start));
+
+    int fpCount = 0;
+    start = System.currentTimeMillis();
+    for (int i = keyNum; i < 2 * keyNum; i++) {
+      if (BloomFilterUtil.contains(keys[i], 0, keys[i].length, new MultiByteBuff(bfc.bloom), 0,
+        (int) bfc.byteSize, bfc.hash, bfc.hashCount) == true) {
+        fpCount++;
+      }
+    }
+    end = System.currentTimeMillis();
+    System.out.println("bloom query not added time = " + (end - start));
+    System.out.println("bloom fp rate = " + 0.1 * fpCount / keyNum);
+
+    System.out.println();
+
+
+    // test for ribbon
+    System.load("/Users/rainnight/codes/IdeaProjects/hbase/hbase-server/src/test/native/libribbon_filter.dylib");
+    start = System.currentTimeMillis();
+    RibbonHelper ribbonHelper = new RibbonHelper();
+    ribbonHelper.initRibbonFilter(byteSizeHint);
+    end = System.currentTimeMillis();
+    long constructT = end - start;
+
+    start = System.currentTimeMillis();
+    for (int i = 0; i < 146706; i++) {
+      ribbonHelper.addKey(keys2[i]);
+    }
+    end = System.currentTimeMillis();
+    long constructT2 = end - start;
+
+    start = System.currentTimeMillis();
+    ribbonHelper.backSubst();
+    end = System.currentTimeMillis();
+    System.out.println("ribbon construct time =" + (end - start + constructT + constructT2));
+
+    start = System.currentTimeMillis();
+    for (int i = 0; i < 146706; i++) {
+      assertTrue(ribbonHelper.filterQuery(keys2[i]));
+//      System.out.println(i);
+    }
+    end = System.currentTimeMillis();
+    System.out.println("ribbon query added time = " + (end - start));
+
+    int fpCount2 = 0;
+    start = System.currentTimeMillis();
+    for (int i = 2 * keyNum - 146706; i >= 0; i--) {
+      if (ribbonHelper.filterQuery(keys2[i])) {
+        fpCount2++;
+      }
+    }
+    end = System.currentTimeMillis();
+    System.out.println("ribbon query not added time = " + (end - start));
+    System.out.println("ribbon fp rate = " + 0.1 * fpCount2 / keyNum);
+    System.out.println("////////////////////////////");
+    System.out.println("ribbon native add time = " + ribbonHelper.getAddDuration());
+    System.out.println("ribbon native backSubst time = " + ribbonHelper.getBackSubstDuration());
+    System.out.println("ribbon native query time = " + ribbonHelper.getQueryDuration());
+    System.out.println("ribbon native string to chars time = " + ribbonHelper.getStringToCharsDuration());
+    System.out.println("ribbon native init time = " + ribbonHelper.getInitDuration());
+    System.out.println("////////////////////////////");
+    System.out.println("ribbon native construct time = " + (ribbonHelper.getInitDuration() + ribbonHelper.getAddDuration() + ribbonHelper.getBackSubstDuration()));
+    ribbonHelper.close();
+    System.out.println("////////////////////////////");
+    System.out.println("ribbon space = 146706/155136");
+    System.out.println("bloom space = " + keyNum + "/155136");
   }
 }
