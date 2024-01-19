@@ -25,6 +25,22 @@ JNIEXPORT jboolean JNICALL Java_org_apache_hadoop_hbase_util_RibbonHelper_addKey
 
 /*
  * Class:     org_apache_hadoop_hbase_util_RibbonHelper
+ * Method:    addRang
+ * Signature: ([Ljava/lang/String;I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_apache_hadoop_hbase_util_RibbonHelper_addRang
+  (JNIEnv *, jobject, jobjectArray, jint);
+
+/*
+ * Class:     org_apache_hadoop_hbase_util_RibbonHelper
+ * Method:    addRangAndInit
+ * Signature: (I[Ljava/lang/String;IZ)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_apache_hadoop_hbase_util_RibbonHelper_addRangAndInit
+  (JNIEnv *, jobject, jint, jobjectArray, jint, jboolean);
+
+/*
+ * Class:     org_apache_hadoop_hbase_util_RibbonHelper
  * Method:    backSubst
  * Signature: ()V
  */
@@ -77,6 +93,14 @@ JNIEXPORT jdouble JNICALL Java_org_apache_hadoop_hbase_util_RibbonHelper_getQuer
  * Signature: ()D
  */
 JNIEXPORT jdouble JNICALL Java_org_apache_hadoop_hbase_util_RibbonHelper_getStringToCharsDuration
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     org_apache_hadoop_hbase_util_RibbonHelper
+ * Method:    getStringToHash64Duration
+ * Signature: ()D
+ */
+JNIEXPORT jdouble JNICALL Java_org_apache_hadoop_hbase_util_RibbonHelper_getStringToHash64Duration
   (JNIEnv *, jobject);
 
 /*

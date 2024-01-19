@@ -1,0 +1,28 @@
+maxKey = 111633
+filter size = 155136
+
+bloom construct time = 27
+bloom query added time = 77
+bloom query not added time = 28
+bloom fp rate = 4.2818879721946023E-4
+
+ribbon add rang and init time =127
+ribbon backSubst time =37
+ribbon construct time =164
+ribbon query added time = 112
+ribbon query added time serious error = 146116/146706
+ribbon query not added time = 90
+ribbon fp rate = 3.9325289117017376E-4
+////////////////////////////
+ribbon native add time = 64.654
+ribbon native backSubst time = 36.897
+ribbon native query time = 0.40700000000000025
+ribbon native string to chars time = 60.372
+ribbon native init time = 0.017
+ribbon native string to hash64 time = 3.329999999999895
+////////////////////////////
+ribbon native construct time = 101.56799999999998
+////////////////////////////
+ribbon space = 146706/155136
+bloom space = 111633/155136
+improve space = 0.3141812904786219

@@ -1,0 +1,64 @@
+#错误的时候
+maxKey = 111633
+filter size = 155136
+
+bloom construct time = 24
+bloom query added time = 67
+bloom query not added time = 29
+bloom fp rate = 4.2818879721946023E-4
+
+banding result is true
+ribbon init time =1
+ribbon add range time =136
+ribbon backSubst time =37
+ribbon construct time =174
+ribbon query added time = 135
+ribbon query added time serious error = 95963/146706
+ribbon query not added time = 96
+ribbon fp rate = 0.010203971943780065
+////////////////////////////
+ribbon native add time = 32.9900000000008
+ribbon native backSubst time = 37.149
+ribbon native query time = 1.569999999999965
+ribbon native string to chars time = 1.5809999999999906
+ribbon native init time = 0.631
+ribbon native string to hash64 time = 3.30399999999991
+////////////////////////////
+ribbon native construct time = 70.7700000000008
+////////////////////////////
+ribbon space = 146706/155136
+bloom space = 111633/155136
+improve space = 0.3141812904786219
+
+
+# 正确的时候
+maxKey = 111633
+filter size = 155136
+
+bloom construct time = 30
+bloom query added time = 81
+bloom query not added time = 30
+bloom fp rate = 4.2818879721946023E-4
+
+banding result is true
+ribbon init time =2
+ribbon add range time =135
+ribbon backSubst time =39
+ribbon construct time =176
+ribbon query added time = 178
+ribbon query added time serious error = 0/146706
+ribbon query not added time = 92
+ribbon fp rate = 3.6369173989770053E-4
+////////////////////////////
+ribbon native add time = 32.43100000000082
+ribbon native backSubst time = 38.465
+ribbon native query time = 6.092000000000271
+ribbon native string to chars time = 1.6839999999999868
+ribbon native init time = 0.536
+ribbon native string to hash64 time = 3.3949999999998974
+////////////////////////////
+ribbon native construct time = 71.43200000000083
+////////////////////////////
+ribbon space = 146706/155136
+bloom space = 111633/155136
+improve space = 0.3141812904786219
